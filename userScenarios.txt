@@ -1,0 +1,72 @@
+As a craigslist seller,
+I want to log in
+in order to view my account; 
+
+
+Given the correct email/handle and correct password, 
+when you log in
+Then it should take you to your main account page.
+
+Given the correct email/handle and incorrect password,
+when you log in
+then it should print out an error message
+
+Given the incorrect email/handle and incorrect password,
+when you log in
+then it should print out an error message
+
+Given I am logged in
+when you click log out
+then it logs you out
+
+Given I am logged out 
+And click 'forgot my password'
+When you enter an incorrect email
+then it prints out an error
+
+
+
+
+As a craigslist seller,
+I want to save a search
+so that I can check the competition
+
+-save 1 when you have 0
+-saving as many as you can
+-saving when you're not logged in
+-save one that you already saved
+-save an empty search
+
+
+
+
+
+
+
+
+As a seller
+I want to create a for sale by owner draft
+so that I can potentially post it for others to buy
+
+-enter text in title and body and zipcode
+-enter text in just body 
+-enter text in just title
+-enter incorrect zipcode
+-enter incorrect phone number
+
+
+
+
+As a seller
+I want to publish a draft
+so that others can buy it
+
+-make a post and delete it but go back before deleting it
+-make a post and delete it and delete it for good
+-make a post and delete it for good and then bring it back
+-make a post and delete it and bring it back until it wont let you anymore (3 times)
+-make a post, delete it twice, edit it, and delete it once more
+
+
+
+
