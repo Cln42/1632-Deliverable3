@@ -1,35 +1,37 @@
+https://pittsburgh.craigslist.org/
+
+
 As a craigslist seller,
 I want to log in
 in order to view my account; 
+-------------------------------
 
+Given I enter the correct email or handle and correct password, 
+when I click 'Log in'
+Then it should take me to my main account page.
 
-Given the correct email/handle and correct password, 
-when you log in
-Then it should take you to your main account page.
+Given I enter the correct email or handle and incorrect password,
+when I click 'Log in'
+then it should print out "Your email address, handle or password is incorrect. Please try again."
 
-Given the correct email/handle and incorrect password,
-when you log in
-then it should print out an error message
-
-Given the incorrect email/handle and incorrect password,
-when you log in
-then it should print out an error message
+Given I enter the incorrect email or handle and incorrect password,
+when I click 'Log in'
+then it should print out "Your email address, handle or password is incorrect. Please try again."
 
 Given I am logged in
-when you click log out
-then it logs you out
+when I go to 'My Account' and  click 'Log out'
+then it logs me out and takes me back to the login page.
 
 Given I am logged out 
-And click 'forgot my password'
-When you enter an incorrect email
-then it prints out an error
-
-
+And click 'Forgot My Password'
+When you enter an invalid email and click 'Reset Password'
+then it prints out "Your email address does not look correct. Please try again.".
 
 
 As a craigslist seller,
 I want to save a search
 so that I can check the competition
+-------------------------------
 
 -save 1 when you have 0
 -saving as many as you can
@@ -39,27 +41,70 @@ so that I can check the competition
 
 
 
-
-
-
-
-
 As a seller
-I want to create a for sale by owner draft
-so that I can potentially post it for others to buy
+I want to create a 'for sale by owner' draft
+so that I can post it for others to buy
+-------------------------------
 
--enter text in title and body and zipcode
--enter text in just body 
--enter text in just title
--enter incorrect zipcode
--enter incorrect phone number
+Given I have logged in to my account page
+and create a posting under 'for sale by owner - general for sale - by owner'
+when I enter 'title' in the title 
+and I enter 'body' in the body
+and I enter '15260' in the zipcode
+and I click 'continue', 'continue' and 'done with images'
+then it should create a draft in my account page. 
 
+Given I have logged in to my account page
+and create a posting under 'for sale by owner - general for sale - by owner'
+when I enter nothing in the title
+and 'body' in the body
+and '15260' in the zipcode
+and I click 'continue'
+then it will print out the error message "Some required information is missing or incorrect.
+	Please correct the fields marked in red:
+	All postings must have a title." 
+and highlight the title.
+
+Given I have logged in to my account page
+and create a posting under 'for sale by owner - general for sale - by owner'
+when I enter 'title' in the title
+and nothing in the body
+and '15260' in the zipcode
+and I click 'continue'
+then it will print out the error message "Some required information is missing or incorrect.
+	Please correct the fields marked in red:
+	All postings must have a description"
+and highlight the body
+
+Given I have logged in to my account page
+and create a posting under 'for sale by owner - general for sale - by owner'
+when I enter 'title' in the title
+and 'body' in the body
+and '999999999999999' in the zipcode
+and I click 'continue'
+then it will print out the error message "Some required information is missing or incorrect.
+	Please correct the fields marked in red:
+	That postal (zip) code is not valid for the area that you're posting to. Please enter a valid postal code."
+and highlight the zipcode.
+
+Given I have logged in to my account page
+and create a posting under 'for sale by owner - general for sale - by owner'
+when I enter 'title' in the title 
+and I enter 'body' in the body
+and I enter '15260' in the zipcode
+and I enter 'phone' in the phone number
+and I click 'continue'
+then it will print the error message "Some required information is missing or incorrect.
+Please correct the fields marked in red:
+That phone number is not valid for the country that you're posting to. Please enter a valid 10-digit phone number or leave the field blank. If your phone number has an extension, please enter it in the 'extension' field."
+and highlight the phone number.
 
 
 
 As a seller
 I want to publish a draft
 so that others can buy it
+-------------------------------
 
 -make a post and delete it but go back before deleting it
 -make a post and delete it and delete it for good
