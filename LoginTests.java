@@ -12,8 +12,22 @@ import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+/*
+ * As a craigslist seller,
+ * I want to log in
+ * in order to view my account;
+ */
+
+
 public class LoginTests {
 
+	WebDriver driver = new FirefoxDriver();
+	
+	@Before
+	public void setup(){
+		driver.get("https://accounts.craigslist.org/");
+	}
+	
 	public static void login(WebDriver driver, String user, String pass) {
 		WebElement userName = driver.findElement(By.id("inputEmailHandle"));
 		userName.sendKeys(user);
@@ -29,13 +43,8 @@ public class LoginTests {
 	 */
 	@Test
 	public void valid_login() {
-		// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		WebDriver driver = new FirefoxDriver();
-
-		driver.get("https://accounts.craigslist.org/");
 		login(driver, "mythrowawayhandle2", "thisisapassword");
 		assertEquals("craigslist account", driver.getTitle());
-		driver.quit();
 	}
 
 	/*
@@ -43,16 +52,12 @@ public class LoginTests {
 	 */
 	@Test
 	public void invalid_password_login() {
-		WebDriver driver = new FirefoxDriver();
-
-		driver.get("https://accounts.craigslist.org/");
 		login(driver, "mythrowawayhandle2", "thisisthewrongpassword");
 
 		List<WebElement> list = driver
 				.findElements(By
 						.xpath("//*[contains(text(),'Your email address, handle or password is incorrect. Please try again.')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 
 	/*
@@ -60,16 +65,12 @@ public class LoginTests {
 	 */
 	@Test
 	public void invalid_handle_password_login() {
-		WebDriver driver = new FirefoxDriver();
-
-		driver.get("https://accounts.craigslist.org/");
 		login(driver, "myinvalidhandle", "thisisthewrongpassword");
 
 		List<WebElement> list = driver
 				.findElements(By
 						.xpath("//*[contains(text(),'Your email address, handle or password is incorrect. Please try again.')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 
 	/*
@@ -77,13 +78,10 @@ public class LoginTests {
 	 */
 	@Test
 	public void valid_logout() {
-		WebDriver driver = new FirefoxDriver();
-		driver.get("https://accounts.craigslist.org/");
 		login(driver, "mythrowawayhandle2", "thisisapassword");
 		WebElement logout = driver.findElement(By.linkText("log out"));
 		logout.click();
 		assertEquals("craigslist: account log in", driver.getTitle());
-		driver.quit();
 	}
 
 	/*
@@ -91,8 +89,6 @@ public class LoginTests {
 	 */
 	@Test
 	public void forgot_password() {
-		WebDriver driver = new FirefoxDriver();
-		driver.get("https://accounts.craigslist.org/");
 		WebElement forgot_pass = driver.findElement(By
 				.linkText("Forgot password?"));
 		forgot_pass.click();
@@ -106,6 +102,10 @@ public class LoginTests {
 				.findElements(By
 						.xpath("//*[contains(text(),'Your email address does not look correct. Please try again.')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
+	}
+	
+	@After
+	public void teardown(){
 		driver.quit();
 	}
 

@@ -15,13 +15,24 @@ import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class DraftTests {
 
+/*
+ * As a craigslist seller
+ * I want to create a 'for sale by owner' draft
+ * so that I can post it for others to buy
+ */
+
+
+public class DraftTests {
+	
+	WebDriver driver = new FirefoxDriver();
+	
+	
 	/*
 	 * to set up code
 	 * logs user in
 	 */
-	public static void login(WebDriver driver){
+	public void login(){
 		driver.get("https://accounts.craigslist.org/");
 		WebElement userName = driver.findElement(By.id("inputEmailHandle"));
 		userName.sendKeys("mythrowawayhandle2");
@@ -36,8 +47,9 @@ public class DraftTests {
 	 * choose for sale by owner
 	 * choose general for sale - by owner
 	 */
-	public static void set_up_code(WebDriver driver){
-		login(driver);
+	@Before
+	public void set_up_code(){
+		login();
 		WebElement go = driver.findElement(By.cssSelector("form.new_posting_thing > input[type='submit']"));
 		go.click();
 		WebElement post_type = driver.findElement(By.xpath("(//input[@name='id'])[6]"));
@@ -47,9 +59,9 @@ public class DraftTests {
 	}
 	
 	/*
-	 * 
+	 * Fills in draft post with title, string, and zipcode
 	 */
-	public static void fill_in_post(WebDriver driver, String t, String b, String z){
+	public void fill_in_post (String t, String b, String z){
 		WebElement title = driver.findElement(By.id("PostingTitle"));
 		WebElement body = driver.findElement(By.id("PostingBody"));
 		WebElement zip = driver.findElement(By.id("postal_code"));
@@ -64,9 +76,7 @@ public class DraftTests {
 	 */
 	@Test
 	public void draft_valid(){
-		WebDriver driver = new FirefoxDriver();
-		set_up_code(driver);
-		fill_in_post(driver, "title", "body", "15260");
+		fill_in_post("title", "body", "15260");
 		WebElement cont = driver.findElement(By.name("go"));
 		cont.click();
 		cont = driver.findElement(By.cssSelector("button.continue.bigbutton"));
@@ -77,7 +87,6 @@ public class DraftTests {
 				.findElements(By
 						.xpath("//*[contains(text(),'this is an unpublished draft.')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 	
 	/*
@@ -86,9 +95,7 @@ public class DraftTests {
 	 */
 	@Test
 	public void draft_invalid_title(){
-		WebDriver driver = new FirefoxDriver();
-		set_up_code(driver);
-		fill_in_post(driver, "", "body", "15260");
+		fill_in_post("", "body", "15260");
 		WebElement cont = driver.findElement(By.name("go"));
 		cont.click();
 		assertTrue(driver.findElements(By.cssSelector("span.err")).size() > 0);
@@ -96,7 +103,6 @@ public class DraftTests {
 				.findElements(By
 						.xpath("//*[contains(text(),'All postings must have a title.')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 	
 	/*
@@ -105,9 +111,7 @@ public class DraftTests {
 	 */
 	@Test
 	public void draft_invalid_body(){
-		WebDriver driver = new FirefoxDriver();
-		set_up_code(driver);
-		fill_in_post(driver, "title", "", "15260");
+		fill_in_post("title", "", "15260");
 		
 		WebElement cont = driver.findElement(By.name("go"));
 		cont.click();
@@ -116,7 +120,6 @@ public class DraftTests {
 				.findElements(By
 						.xpath("//*[contains(text(),'All postings must have a description')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 	
 	/*
@@ -125,16 +128,13 @@ public class DraftTests {
 	 */
 	@Test
 	public void draft_invalid_zipcode(){
-		WebDriver driver = new FirefoxDriver();
-		set_up_code(driver);
-		fill_in_post(driver, "title", "body", "999999999999999");
+		fill_in_post("title", "body", "999999999999999");
 		
 		WebElement cont = driver.findElement(By.name("go"));
 		cont.click();
 		assertTrue(driver.findElements(By.cssSelector("span.err")).size() > 0);
 		List<WebElement> list = driver.findElements(By.xpath("//*[contains(text(),'That postal (zip) code is not valid for the area')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
-		driver.quit();
 	}
 	
 	/*
@@ -143,9 +143,7 @@ public class DraftTests {
 	 */
 	@Test
 	public void draft_invalid_phone(){
-		WebDriver driver = new FirefoxDriver();
-		set_up_code(driver);
-		fill_in_post(driver, "title", "body", "15260");
+		fill_in_post("title", "body", "15260");
 		WebElement phone = driver.findElement(By.id("contact_phone"));
 		phone.sendKeys("phone");
 		
@@ -156,6 +154,10 @@ public class DraftTests {
 				.findElements(By
 						.xpath("//*[contains(text(),'That phone number is not valid for the country')]"));
 		assertTrue("Error Message Not Found!", list.size() > 0);
+	}
+	
+	@After 
+	public void teardown(){
 		driver.quit();
 	}
 	
